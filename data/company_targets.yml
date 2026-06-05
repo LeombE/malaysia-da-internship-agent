@@ -1,0 +1,80 @@
+# Add official career-page URLs here when you find them.
+# The company_pages source only reads public pages and checks robots.txt.
+# For Workday/Greenhouse/Lever pages, prefer their public job-list APIs when available.
+companies:
+  - name: "Intel"
+    tier: 1
+    locations: ["Penang", "Kulim", "Kuala Lumpur"]
+    career_urls: []
+  - name: "Deloitte"
+    tier: 1
+    locations: ["Kuala Lumpur", "Penang", "Johor"]
+    career_urls: []
+  - name: "PwC"
+    tier: 1
+    locations: ["Kuala Lumpur", "Penang", "Johor"]
+    career_urls: []
+  - name: "EY"
+    tier: 1
+    locations: ["Kuala Lumpur", "Penang", "Johor"]
+    career_urls: []
+  - name: "KPMG"
+    tier: 1
+    locations: ["Kuala Lumpur", "Penang", "Johor"]
+    career_urls: []
+  - name: "Maybank"
+    tier: 1
+    locations: ["Kuala Lumpur", "Selangor"]
+    career_urls: []
+  - name: "CIMB"
+    tier: 1
+    locations: ["Kuala Lumpur", "Selangor"]
+    career_urls: []
+  - name: "PETRONAS"
+    tier: 1
+    locations: ["Kuala Lumpur"]
+    career_urls: []
+  - name: "Shell"
+    tier: 1
+    locations: ["Kuala Lumpur", "Cyberjaya"]
+    career_urls: []
+  - name: "Grab"
+    tier: 1
+    locations: ["Petaling Jaya", "Kuala Lumpur", "Selangor"]
+    career_urls: []
+  - name: "Shopee"
+    tier: 1
+    locations: ["Kuala Lumpur", "Selangor"]
+    career_urls: []
+  - name: "Maxis"
+    tier: 1
+    locations: ["Kuala Lumpur", "Selangor"]
+    career_urls: []
+  - name: "CelcomDigi"
+    tier: 1
+    locations: ["Selangor", "Kuala Lumpur"]
+    career_urls: []
+  - name: "Dyson"
+    tier: 1
+    locations: ["Johor", "Senai"]
+    career_urls: []
+  - name: "Keysight"
+    tier: 1
+    locations: ["Penang"]
+    career_urls: []
+  - name: "Micron"
+    tier: 1
+    locations: ["Penang"]
+    career_urls: []
+  - name: "Western Digital"
+    tier: 1
+    locations: ["Penang", "Selangor"]
+    career_urls: []
+  - name: "Bosch"
+    tier: 1
+    locations: ["Penang", "Selangor"]
+    career_urls: []
+  - name: "Jabil"
+    tier: 1
+    locations: ["Penang"]
+    career_urls: []

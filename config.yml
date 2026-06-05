@@ -1,0 +1,152 @@
+target:
+  desired_start: "2026-08-02"
+  desired_end: "2026-11-03"
+  min_duration_months: 3
+  accept_longer_duration: true
+  country: "Malaysia"
+  preferred_states:
+    - "Kuala Lumpur"
+    - "Selangor"
+    - "Johor"
+    - "Penang"
+  preferred_cities:
+    - "Kuala Lumpur"
+    - "Petaling Jaya"
+    - "Subang Jaya"
+    - "Shah Alam"
+    - "Cyberjaya"
+    - "Bangsar South"
+    - "George Town"
+    - "Bayan Lepas"
+    - "Johor Bahru"
+    - "Iskandar Puteri"
+    - "Senai"
+
+keywords:
+  positive:
+    - "data analyst intern"
+    - "data analytics intern"
+    - "business intelligence intern"
+    - "bi intern"
+    - "data science intern"
+    - "analytics intern"
+    - "power bi intern"
+    - "sql intern"
+    - "reporting intern"
+    - "business analyst intern"
+    - "latihan industri data"
+    - "praktikal data"
+  skills:
+    - "excel"
+    - "sql"
+    - "power bi"
+    - "tableau"
+    - "python"
+    - "dashboard"
+    - "reporting"
+    - "analytics"
+    - "data visualization"
+    - "business intelligence"
+  negative:
+    - "senior"
+    - "manager"
+    - "lead"
+    - "director"
+    - "head of"
+    - "full-time"
+    - "permanent"
+    - "5 years"
+    - "3 years experience"
+    - "consultant senior"
+    - "sales promoter"
+    - "telemarketer"
+
+queries:
+  - query: "data analyst intern in Malaysia"
+    locations: ["Johor", "Selangor", "Kuala Lumpur", "Penang", "Malaysia"]
+  - query: "data analytics internship in Malaysia"
+    locations: ["Johor", "Selangor", "Kuala Lumpur", "Penang", "Malaysia"]
+  - query: "business intelligence intern in Malaysia"
+    locations: ["Johor", "Selangor", "Kuala Lumpur", "Penang", "Malaysia"]
+  - query: "data science internship in Malaysia"
+    locations: ["Johor", "Selangor", "Kuala Lumpur", "Penang", "Malaysia"]
+  - query: "Power BI intern in Malaysia"
+    locations: ["Johor", "Selangor", "Kuala Lumpur", "Penang", "Malaysia"]
+  - query: "SQL intern in Malaysia"
+    locations: ["Johor", "Selangor", "Kuala Lumpur", "Penang", "Malaysia"]
+  - query: "latihan industri data analyst Malaysia"
+    locations: ["Malaysia"]
+  - query: "praktikal data analytics Malaysia"
+    locations: ["Malaysia"]
+
+company_tiers:
+  tier_1:
+    - "Maybank"
+    - "CIMB"
+    - "Public Bank"
+    - "RHB"
+    - "Hong Leong"
+    - "Bank Negara Malaysia"
+    - "PETRONAS"
+    - "Shell"
+    - "BP"
+    - "Deloitte"
+    - "PwC"
+    - "EY"
+    - "KPMG"
+    - "Accenture"
+    - "IBM"
+    - "Intel"
+    - "AMD"
+    - "Dell"
+    - "Micron"
+    - "Western Digital"
+    - "Keysight"
+    - "Bosch"
+    - "Jabil"
+    - "Flex"
+    - "Infineon"
+    - "Dyson"
+    - "Grab"
+    - "Shopee"
+    - "Lazada"
+    - "TikTok"
+    - "ByteDance"
+    - "Maxis"
+    - "CelcomDigi"
+    - "Telekom Malaysia"
+    - "Axiata"
+    - "AirAsia"
+    - "Capital A"
+    - "Touch 'n Go"
+    - "Roche"
+    - "DHL"
+    - "Siemens"
+  tier_2:
+    - "Carsome"
+    - "Boost"
+    - "Fave"
+    - "iPay88"
+    - "Experian"
+    - "DKSH"
+    - "UOB"
+    - "OCBC"
+    - "HSBC"
+    - "Standard Chartered"
+    - "AIA"
+    - "Prudential"
+    - "Great Eastern"
+    - "Sunway"
+    - "Gamuda"
+    - "IOI"
+    - "Sime Darby"
+    - "Top Glove"
+    - "Hartalega"
+
+weights:
+  role_fit: 30
+  date_fit: 20
+  location_fit: 15
+  company_tier: 15
+  freshness: 10
+  requirements_fit: 10
