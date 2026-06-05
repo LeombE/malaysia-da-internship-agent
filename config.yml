@@ -4,38 +4,87 @@ target:
   min_duration_months: 3
   accept_longer_duration: true
   country: "Malaysia"
+
+  # Realistic priority for your situation: Johor first, then offer density in Selangor/KL, then Penang.
   preferred_states:
-    - "Kuala Lumpur"
-    - "Selangor"
     - "Johor"
-    - "Penang"
-  preferred_cities:
+    - "Selangor"
     - "Kuala Lumpur"
-    - "Petaling Jaya"
-    - "Subang Jaya"
-    - "Shah Alam"
-    - "Cyberjaya"
-    - "Bangsar South"
-    - "George Town"
-    - "Bayan Lepas"
-    - "Johor Bahru"
-    - "Iskandar Puteri"
-    - "Senai"
+    - "Penang"
+
+  location_weights:
+    Johor: 16
+    Selangor: 14
+    Kuala Lumpur: 13
+    Penang: 11
+    Malaysia: 6
+
+  preferred_cities:
+    Johor Bahru: 4
+    Iskandar Puteri: 4
+    Nusajaya: 3
+    Senai: 3
+    Kulai: 3
+    Pasir Gudang: 2
+    Petaling Jaya: 4
+    Subang Jaya: 4
+    Shah Alam: 4
+    Puchong: 3
+    Cyberjaya: 3
+    Klang: 2
+    Bangsar South: 4
+    Kuala Lumpur: 4
+    George Town: 4
+    Bayan Lepas: 4
+    Bukit Mertajam: 2
+
+strategy:
+  # Buckets used in CSV/tracker.
+  immediate_apply_min_score: 70
+  apply_soon_min_score: 55
+  mass_apply_min_score: 42
+  tracker_min_score: 38
+  salary_weight: low
+  priority_goal: "maximize real internship offer probability for Aug-Nov 2026 industrial training"
 
 keywords:
-  positive:
+  internship:
+    - "intern"
+    - "internship"
+    - "practical training"
+    - "industrial training"
+    - "latihan industri"
+    - "praktikal"
+    - "trainee"
+
+  role_core:
     - "data analyst intern"
     - "data analytics intern"
+    - "data analyst internship"
+    - "data analytics internship"
     - "business intelligence intern"
     - "bi intern"
-    - "data science intern"
-    - "analytics intern"
     - "power bi intern"
     - "sql intern"
     - "reporting intern"
+    - "analytics intern"
+    - "data science intern"
     - "business analyst intern"
     - "latihan industri data"
     - "praktikal data"
+
+  role_adjacent:
+    - "data analyst"
+    - "data analytics"
+    - "business intelligence"
+    - "power bi"
+    - "dashboard"
+    - "reporting analyst"
+    - "business analyst"
+    - "data science"
+    - "data visualization"
+    - "analytics"
+
   skills:
     - "excel"
     - "sql"
@@ -47,37 +96,113 @@ keywords:
     - "analytics"
     - "data visualization"
     - "business intelligence"
+    - "etl"
+    - "database"
+    - "statistics"
+
+  student_fit:
+    - "student"
+    - "undergraduate"
+    - "bachelor"
+    - "degree"
+    - "diploma"
+    - "fresh graduate"
+    - "entry level"
+    - "no experience"
+    - "university"
+    - "final year"
+
+  duration_fit:
+    - "3 months"
+    - "three months"
+    - "minimum 3 months"
+    - "at least 3 months"
+    - "3-6 months"
+    - "3 to 6 months"
+    - "industrial training"
+    - "latihan industri"
+    - "praktikal"
+
+  date_window:
+    - "august 2026"
+    - "aug 2026"
+    - "september 2026"
+    - "sep 2026"
+    - "october 2026"
+    - "oct 2026"
+    - "november 2026"
+    - "nov 2026"
+    - "2026-08"
+    - "2026-09"
+    - "2026-10"
+    - "2026-11"
+
   negative:
     - "senior"
     - "manager"
     - "lead"
     - "director"
     - "head of"
-    - "full-time"
     - "permanent"
     - "5 years"
     - "3 years experience"
+    - "4 years experience"
     - "consultant senior"
     - "sales promoter"
     - "telemarketer"
+    - "door to door"
+    - "insurance agent"
+    - "real estate agent"
 
-queries:
-  - query: "data analyst intern in Malaysia"
-    locations: ["Johor", "Selangor", "Kuala Lumpur", "Penang", "Malaysia"]
-  - query: "data analytics internship in Malaysia"
-    locations: ["Johor", "Selangor", "Kuala Lumpur", "Penang", "Malaysia"]
-  - query: "business intelligence intern in Malaysia"
-    locations: ["Johor", "Selangor", "Kuala Lumpur", "Penang", "Malaysia"]
-  - query: "data science internship in Malaysia"
-    locations: ["Johor", "Selangor", "Kuala Lumpur", "Penang", "Malaysia"]
-  - query: "Power BI intern in Malaysia"
-    locations: ["Johor", "Selangor", "Kuala Lumpur", "Penang", "Malaysia"]
-  - query: "SQL intern in Malaysia"
-    locations: ["Johor", "Selangor", "Kuala Lumpur", "Penang", "Malaysia"]
-  - query: "latihan industri data analyst Malaysia"
-    locations: ["Malaysia"]
-  - query: "praktikal data analytics Malaysia"
-    locations: ["Malaysia"]
+  non_malaysia_noise:
+    - "south africa"
+    - "singapore only"
+    - "india"
+    - "united states"
+    - "usa"
+    - "united kingdom"
+    - "australia"
+    - "philippines"
+    - "indonesia"
+
+source_quality:
+  official_or_ats_domains:
+    - "careers"
+    - "myworkdayjobs.com"
+    - "workdayjobs.com"
+    - "successfactors"
+    - "greenhouse.io"
+    - "lever.co"
+    - "smartrecruiters.com"
+    - "grab.careers"
+    - "jobs.abbott"
+    - "petronas.com"
+    - "intel.com"
+    - "dell.com"
+    - "bosch.com"
+    - "keysight.com"
+    - "maxis.com.my"
+    - "airasia.com"
+    - "tngdigital.com.my"
+
+  trusted_job_boards:
+    - "jobstreet.com"
+    - "linkedin.com/jobs"
+    - "hiredly.com"
+    - "my.hiredly.com"
+    - "indeed.com"
+    - "glassdoor.com"
+    - "foundit.my"
+
+  aggregator_or_low_signal:
+    - "trabajo.org"
+    - "jobleads.com"
+    - "jooble.org"
+    - "grabjobs.co"
+    - "talent.com"
+    - "jora.com"
+    - "adzuna.com"
+    - "freelancing.my"
 
 company_tiers:
   tier_1:
@@ -88,6 +213,7 @@ company_tiers:
     - "Hong Leong"
     - "Bank Negara Malaysia"
     - "PETRONAS"
+    - "Petronas Ventures"
     - "Shell"
     - "BP"
     - "Deloitte"
@@ -119,10 +245,17 @@ company_tiers:
     - "AirAsia"
     - "Capital A"
     - "Touch 'n Go"
+    - "TNG Digital"
     - "Roche"
     - "DHL"
     - "Siemens"
+
   tier_2:
+    - "Abbott"
+    - "NTT DATA"
+    - "Allianz"
+    - "AXA"
+    - "Mettler-Toledo"
     - "Carsome"
     - "Boost"
     - "Fave"
@@ -143,10 +276,24 @@ company_tiers:
     - "Top Glove"
     - "Hartalega"
 
-weights:
-  role_fit: 30
-  date_fit: 20
-  location_fit: 15
-  company_tier: 15
-  freshness: 10
-  requirements_fit: 10
+# Keep this list compact because Basic plan has only 200 API requests/month.
+# jsearch.py rotates query-location pairs each run, so 3 requests/run still covers all pairs over time.
+queries:
+  - query: "data analyst internship"
+    locations: ["Johor", "Selangor", "Kuala Lumpur", "Penang"]
+  - query: "data analytics intern"
+    locations: ["Johor", "Selangor", "Kuala Lumpur", "Penang"]
+  - query: "business intelligence intern"
+    locations: ["Johor", "Selangor", "Kuala Lumpur", "Penang"]
+  - query: "Power BI internship"
+    locations: ["Johor", "Selangor", "Kuala Lumpur", "Penang"]
+  - query: "business analyst internship data"
+    locations: ["Johor", "Selangor", "Kuala Lumpur", "Penang"]
+  - query: "data science internship"
+    locations: ["Johor", "Selangor", "Kuala Lumpur", "Penang"]
+  - query: "latihan industri data analyst"
+    locations: ["Johor", "Selangor", "Kuala Lumpur", "Penang", "Malaysia"]
+  - query: "praktikal data analytics"
+    locations: ["Johor", "Selangor", "Kuala Lumpur", "Penang", "Malaysia"]
+  - query: "data analyst intern Malaysia"
+    locations: ["Malaysia"]

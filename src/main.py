@@ -57,22 +57,34 @@ def main() -> int:
 
     db_path = os.getenv("DB_PATH", "data/jobs.db")
     csv_path = os.getenv("CSV_EXPORT_PATH", "data/latest_ranked_jobs.csv")
-    max_results = int(os.getenv("MAX_RESULTS_PER_RUN", "80") or 80)
-    min_score = int(os.getenv("MIN_SCORE_TO_NOTIFY", "55") or 55)
+    shortlist_path = os.getenv("SHORTLIST_EXPORT_PATH", "data/today_shortlist.csv")
+    tracker_path = os.getenv("TRACKER_EXPORT_PATH", "data/internship_tracker.csv")
+    max_results = int(os.getenv("MAX_RESULTS_PER_RUN", "120") or 120)
+    min_score = int(os.getenv("MIN_SCORE_TO_NOTIFY", "42") or 42)
+    shortlist_min_score = int(os.getenv("SHORTLIST_MIN_SCORE", "42") or 42)
+    tracker_min_score = int(os.getenv("TRACKER_MIN_SCORE", "38") or 38)
 
     Path("data").mkdir(exist_ok=True)
     store = JobStore(db_path)
     try:
         jobs = collect_jobs(config, store)
+        if os.getenv("RESCORE_EXISTING_DB", "1").strip().lower() not in {"0", "false", "no", "off"}:
+            existing_jobs = store.existing_jobs()
+            if existing_jobs:
+                print(f"Rescoring existing DB jobs: {len(existing_jobs)}")
+                jobs = existing_jobs + jobs
+
         scored = [score_job(job, config) for job in jobs]
         scored.sort(key=lambda j: j.score, reverse=True)
         if max_results:
             scored = scored[:max_results]
 
         new_count, updated_count = store.upsert_jobs(scored)
-        store.export_csv(csv_path)
+        store.export_csv(csv_path, limit=500)
+        store.export_shortlist_csv(shortlist_path, limit=80, min_score=shortlist_min_score)
+        store.export_tracker_csv(tracker_path, min_score=tracker_min_score)
 
-        notify_jobs = store.top_jobs(limit=25, min_score=min_score, only_unnotified=True)
+        notify_jobs = store.top_jobs(limit=25, min_score=min_score, only_unnotified=True, dedupe=True)
         message = format_jobs_message(
             notify_jobs,
             title=f"Malaysia Data Analyst Internship Digest — new:{new_count} updated:{updated_count}",
@@ -80,6 +92,8 @@ def main() -> int:
 
         print(message)
         print(f"\nCSV exported: {csv_path}")
+        print(f"Shortlist exported: {shortlist_path}")
+        print(f"Tracker exported: {tracker_path}")
 
         if not args.dry_run and notify_jobs:
             sent_any = False

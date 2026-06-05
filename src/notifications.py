@@ -16,11 +16,13 @@ def format_jobs_message(jobs: Sequence[dict], title: str = "Malaysia Data Analys
     parts = [title, ""]
     for i, job in enumerate(jobs, 1):
         reasons = job.get("reasons", "")
-        if len(reasons) > 180:
-            reasons = reasons[:177] + "..."
-        line = f"{i}. [{job.get('score')}] {job.get('title')} — {job.get('company')}"
+        if len(reasons) > 220:
+            reasons = reasons[:217] + "..."
+        bucket = job.get("bucket", "")
+        line = f"{i}. [{job.get('score')}] {bucket} | {job.get('title')} — {job.get('company')}"
         parts.append(line)
         parts.append(f"   Location: {job.get('location') or job.get('state') or 'Unknown'} | Source: {job.get('source')}")
+        parts.append(f"   Action: {job.get('recommended_action', 'Review manually.')}")
         parts.append(f"   Why: {reasons}")
         url = job.get("apply_url") or job.get("source_url")
         if url:
@@ -35,7 +37,6 @@ def send_telegram(message: str) -> bool:
     if not token or not chat_id:
         return False
 
-    # Telegram message max is limited, split conservatively.
     chunks = textwrap.wrap(message, width=3500, replace_whitespace=False, drop_whitespace=False)
     if not chunks:
         chunks = [message]
