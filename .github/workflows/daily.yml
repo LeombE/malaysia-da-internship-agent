@@ -2,7 +2,6 @@ name: Malaysia DA Internship Finder
 
 on:
   schedule:
-    # Malaysia time UTC+8: 08:30 and 20:30 MYT
     - cron: "30 0,12 * * *"
   workflow_dispatch:
 
@@ -12,6 +11,7 @@ permissions:
 jobs:
   collect-rank-notify:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -24,7 +24,7 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-       - name: Run internship finder
+      - name: Run internship finder
         env:
           JSEARCH_API_KEY: ${{ secrets.JSEARCH_API_KEY }}
           JSEARCH_MAX_REQUESTS_PER_RUN: ${{ secrets.JSEARCH_MAX_REQUESTS_PER_RUN }}
