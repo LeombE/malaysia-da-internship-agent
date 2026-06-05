@@ -24,7 +24,7 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Run internship finder
+       - name: Run internship finder
         env:
           JSEARCH_API_KEY: ${{ secrets.JSEARCH_API_KEY }}
           JSEARCH_MAX_REQUESTS_PER_RUN: ${{ secrets.JSEARCH_MAX_REQUESTS_PER_RUN }}
