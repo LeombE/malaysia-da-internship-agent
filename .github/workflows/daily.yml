@@ -2,7 +2,7 @@ name: Malaysia DA Internship Finder
 
 on:
   schedule:
-    - cron: "30 0,12 * * *"
+    - cron: "30 4,10,15,22 * * *"
   workflow_dispatch:
 
 permissions:
@@ -44,7 +44,7 @@ jobs:
           CSV_EXPORT_PATH: data/latest_ranked_jobs.csv
           SHORTLIST_EXPORT_PATH: data/today_shortlist.csv
           TRACKER_EXPORT_PATH: data/internship_tracker.csv
-          MAX_RESULTS_PER_RUN: "120"
+          MAX_RESULTS_PER_RUN: "800"
           MIN_SCORE_TO_NOTIFY: "42"
           SHORTLIST_MIN_SCORE: "42"
           TRACKER_MIN_SCORE: "38"

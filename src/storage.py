@@ -81,7 +81,10 @@ def _source_rank(row: dict) -> int:
         return 3
     if any(x in url for x in ["jobstreet", "linkedin", "hiredly", "indeed", "foundit"]):
         return 2
-    if any(x in url for x in ["trabajo", "jobleads", "jooble", "grabjobs", "talent"]):
+    if any(x in url for x in [
+        "trabajo", "jobleads", "jooble", "expertini", "bebee", "grabjobs", "prosple",
+        "whatjobs", "talent", "jora", "maukerja", "builtin", "adzuna", "freelancing",
+    ]):
         return 0
     return 1
 
@@ -178,8 +181,8 @@ class JobStore:
                 if current is None:
                     best[key] = row
                     continue
-                candidate_tuple = (int(row.get("score") or 0), int(row.get("source_rank") or 0), str(row.get("last_seen_at") or ""))
-                current_tuple = (int(current.get("score") or 0), int(current.get("source_rank") or 0), str(current.get("last_seen_at") or ""))
+                candidate_tuple = (int(row.get("source_rank") or 0), int(row.get("score") or 0), str(row.get("last_seen_at") or ""))
+                current_tuple = (int(current.get("source_rank") or 0), int(current.get("score") or 0), str(current.get("last_seen_at") or ""))
                 if candidate_tuple > current_tuple:
                     best[key] = row
             rows = list(best.values())

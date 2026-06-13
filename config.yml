@@ -23,6 +23,7 @@ target:
     Johor Bahru: 4
     Iskandar Puteri: 4
     Nusajaya: 3
+    Skudai: 3
     Senai: 3
     Kulai: 3
     Pasir Gudang: 2
@@ -32,11 +33,22 @@ target:
     Puchong: 3
     Cyberjaya: 3
     Klang: 2
+    Damansara: 3
+    Sunway: 3
+    Ara Damansara: 3
     Bangsar South: 4
     Kuala Lumpur: 4
+    Mid Valley: 3
+    KL Sentral: 3
+    Bukit Bintang: 2
+    Mont Kiara: 2
+    Cheras: 2
     George Town: 4
     Bayan Lepas: 4
+    Batu Kawan: 3
+    Perai: 3
     Bukit Mertajam: 2
+    Butterworth: 2
 
 strategy:
   # Buckets used in CSV/tracker.
@@ -46,6 +58,12 @@ strategy:
   tracker_min_score: 38
   salary_weight: low
   priority_goal: "maximize real internship offer probability for Aug-Nov 2026 industrial training"
+  urgent_campaign:
+    enabled: true
+    starts_on: "2026-06-13"
+    ends_before: "2026-06-28"
+    max_requests_per_run: 160
+    post_campaign_max_requests_per_run: 3
 
 keywords:
   internship:
@@ -62,16 +80,40 @@ keywords:
     - "data analytics intern"
     - "data analyst internship"
     - "data analytics internship"
+    - "data intern"
+    - "analytics intern"
     - "business intelligence intern"
     - "bi intern"
     - "power bi intern"
     - "sql intern"
+    - "sql internship"
     - "reporting intern"
-    - "analytics intern"
+    - "reporting internship"
+    - "dashboard intern"
+    - "dashboard internship"
+    - "analytics internship"
+    - "data internship"
+    - "data visualization intern"
+    - "tableau intern"
     - "data science intern"
     - "business analyst intern"
+    - "operations analytics intern"
+    - "supply chain analytics intern"
+    - "finance analytics intern"
+    - "risk analytics intern"
+    - "marketing analytics intern"
+    - "commercial analytics intern"
+    - "customer analytics intern"
     - "latihan industri data"
+    - "latihan industri data analyst"
+    - "latihan industri data analytics"
+    - "latihan industri business analyst"
     - "praktikal data"
+    - "praktikal data analyst"
+    - "praktikal data analytics"
+    - "praktikal business analyst"
+    - "pelatih data analyst"
+    - "internship data analytics malaysia"
 
   role_adjacent:
     - "data analyst"
@@ -83,6 +125,13 @@ keywords:
     - "business analyst"
     - "data science"
     - "data visualization"
+    - "operations analytics"
+    - "supply chain analytics"
+    - "marketing analytics"
+    - "commercial analytics"
+    - "customer analytics"
+    - "finance analytics"
+    - "risk analytics"
     - "analytics"
 
   skills:
@@ -282,24 +331,279 @@ company_tiers:
     - "Top Glove"
     - "Hartalega"
 
-# Keep this list compact because Basic plan has only 200 API requests/month.
-# jsearch.py rotates query-location pairs each run, so 3 requests/run still covers all pairs over time.
+# V3 15-day urgent campaign strategy:
+# - Target 4 scheduled runs/day and JSEARCH_MAX_REQUESTS_PER_RUN=160 for 15 days.
+# - Expected automatic usage: 4 * 160 * 15 = 9,600 JSearch requests.
+# - This leaves about 400 requests from the 10,000/month Pro plan for manual validation/debug.
+# - Keep JSEARCH_API_KEY in .env/GitHub Secrets; only the request cap changes outside this file.
+# - src/sources/jsearch.py clamps this campaign at 160 requests/run until strategy.urgent_campaign.ends_before.
+# - Query groups G1-G7 are interleaved before rotation so each run mixes high-intent,
+#   company-targeted, local Malay, and Malaysia-wide backup searches.
+query_location_sets:
+  priority_search_locations: &priority_search_locations
+    - "Johor"
+    - "Johor Bahru"
+    - "Iskandar Puteri"
+    - "Senai"
+    - "Kulai"
+    - "Pasir Gudang"
+    - "Nusajaya"
+    - "Skudai"
+    - "Selangor"
+    - "Petaling Jaya"
+    - "Subang Jaya"
+    - "Shah Alam"
+    - "Puchong"
+    - "Cyberjaya"
+    - "Klang"
+    - "Damansara"
+    - "Sunway"
+    - "Ara Damansara"
+    - "Kuala Lumpur"
+    - "Bangsar South"
+    - "KL Sentral"
+    - "Mid Valley"
+    - "Bukit Bintang"
+    - "Mont Kiara"
+    - "Cheras"
+    - "Penang"
+    - "George Town"
+    - "Bayan Lepas"
+    - "Batu Kawan"
+    - "Perai"
+    - "Butterworth"
+    - "Malaysia"
+  regional_search_locations: &regional_search_locations
+    - "Johor"
+    - "Selangor"
+    - "Kuala Lumpur"
+    - "Penang"
+    - "Malaysia"
+  company_search_locations: &company_search_locations
+    - "Johor"
+    - "Selangor"
+    - "Kuala Lumpur"
+    - "Penang"
+    - "Malaysia"
+
 queries:
+  # G1 Core Data Internship
+  - query: "data analyst intern"
+    group: "G1 Core Data Internship"
+    locations: *priority_search_locations
   - query: "data analyst internship"
-    locations: ["Johor", "Selangor", "Kuala Lumpur", "Penang"]
+    group: "G1 Core Data Internship"
+    locations: *priority_search_locations
   - query: "data analytics intern"
-    locations: ["Johor", "Selangor", "Kuala Lumpur", "Penang"]
+    group: "G1 Core Data Internship"
+    locations: *priority_search_locations
+  - query: "data analytics internship"
+    group: "G1 Core Data Internship"
+    locations: *priority_search_locations
+  - query: "data intern"
+    group: "G1 Core Data Internship"
+    locations: *priority_search_locations
+  - query: "analytics intern"
+    group: "G1 Core Data Internship"
+    locations: *priority_search_locations
+  - query: "data science intern"
+    group: "G1 Core Data Internship"
+    locations: *priority_search_locations
+
+  # G2 BI / SQL / Reporting
   - query: "business intelligence intern"
-    locations: ["Johor", "Selangor", "Kuala Lumpur", "Penang"]
-  - query: "Power BI internship"
-    locations: ["Johor", "Selangor", "Kuala Lumpur", "Penang"]
+    group: "G2 BI SQL Reporting"
+    locations: *priority_search_locations
+  - query: "BI intern"
+    group: "G2 BI SQL Reporting"
+    locations: *regional_search_locations
+  - query: "Power BI intern"
+    group: "G2 BI SQL Reporting"
+    locations: *priority_search_locations
+  - query: "SQL intern"
+    group: "G2 BI SQL Reporting"
+    locations: *priority_search_locations
+  - query: "dashboard intern"
+    group: "G2 BI SQL Reporting"
+    locations: *regional_search_locations
+  - query: "reporting intern"
+    group: "G2 BI SQL Reporting"
+    locations: *priority_search_locations
+  - query: "data visualization intern"
+    group: "G2 BI SQL Reporting"
+    locations: *regional_search_locations
+  - query: "Tableau intern"
+    group: "G2 BI SQL Reporting"
+    locations: *regional_search_locations
+
+  # G3 Business / Operations Analytics
+  - query: "business analyst intern"
+    group: "G3 Business Operations Analytics"
+    locations: *priority_search_locations
   - query: "business analyst internship data"
-    locations: ["Johor", "Selangor", "Kuala Lumpur", "Penang"]
-  - query: "data science internship"
-    locations: ["Johor", "Selangor", "Kuala Lumpur", "Penang"]
+    group: "G3 Business Operations Analytics"
+    locations: *priority_search_locations
+  - query: "operations analytics intern"
+    group: "G3 Business Operations Analytics"
+    locations: *regional_search_locations
+  - query: "supply chain analytics intern"
+    group: "G3 Business Operations Analytics"
+    locations: *regional_search_locations
+  - query: "finance analytics intern"
+    group: "G3 Business Operations Analytics"
+    locations: *regional_search_locations
+  - query: "risk analytics intern"
+    group: "G3 Business Operations Analytics"
+    locations: *regional_search_locations
+  - query: "marketing analytics intern"
+    group: "G3 Business Operations Analytics"
+    locations: *regional_search_locations
+  - query: "commercial analytics intern"
+    group: "G3 Business Operations Analytics"
+    locations: *regional_search_locations
+  - query: "customer analytics intern"
+    group: "G3 Business Operations Analytics"
+    locations: *regional_search_locations
+
+  # G4 Malay / Local Internship Terms
   - query: "latihan industri data analyst"
-    locations: ["Johor", "Selangor", "Kuala Lumpur", "Penang", "Malaysia"]
+    group: "G4 Malay Local Internship Terms"
+    locations: *regional_search_locations
+  - query: "latihan industri data analytics"
+    group: "G4 Malay Local Internship Terms"
+    locations: *regional_search_locations
+  - query: "latihan industri business analyst"
+    group: "G4 Malay Local Internship Terms"
+    locations: *regional_search_locations
+  - query: "praktikal data analyst"
+    group: "G4 Malay Local Internship Terms"
+    locations: *regional_search_locations
   - query: "praktikal data analytics"
-    locations: ["Johor", "Selangor", "Kuala Lumpur", "Penang", "Malaysia"]
+    group: "G4 Malay Local Internship Terms"
+    locations: *regional_search_locations
+  - query: "praktikal business analyst"
+    group: "G4 Malay Local Internship Terms"
+    locations: *regional_search_locations
+  - query: "pelatih data analyst"
+    group: "G4 Malay Local Internship Terms"
+    locations: *regional_search_locations
+
+  # G5 Tier A Company Targeted
+  - query: "PETRONAS data analytics internship"
+    group: "G5 Tier A Company Targeted"
+    locations: *company_search_locations
+  - query: "Grab data analytics internship"
+    group: "G5 Tier A Company Targeted"
+    locations: *company_search_locations
+  - query: "TNG Digital data analytics internship"
+    group: "G5 Tier A Company Targeted"
+    locations: *company_search_locations
+  - query: "Shopee data analytics internship"
+    group: "G5 Tier A Company Targeted"
+    locations: *company_search_locations
+  - query: "Intel data analytics internship"
+    group: "G5 Tier A Company Targeted"
+    locations: *company_search_locations
+  - query: "AMD data analytics internship"
+    group: "G5 Tier A Company Targeted"
+    locations: *company_search_locations
+  - query: "Bosch data analytics internship"
+    group: "G5 Tier A Company Targeted"
+    locations: *company_search_locations
+  - query: "Deloitte data analytics internship"
+    group: "G5 Tier A Company Targeted"
+    locations: *company_search_locations
+  - query: "PwC data analytics internship"
+    group: "G5 Tier A Company Targeted"
+    locations: *company_search_locations
+  - query: "EY data analytics internship"
+    group: "G5 Tier A Company Targeted"
+    locations: *company_search_locations
+  - query: "KPMG data analytics internship"
+    group: "G5 Tier A Company Targeted"
+    locations: *company_search_locations
+  - query: "Accenture data analytics internship"
+    group: "G5 Tier A Company Targeted"
+    locations: *company_search_locations
+  - query: "Maybank data analytics internship"
+    group: "G5 Tier A Company Targeted"
+    locations: *company_search_locations
+  - query: "CIMB data analytics internship"
+    group: "G5 Tier A Company Targeted"
+    locations: *company_search_locations
+  - query: "AirAsia data analytics internship"
+    group: "G5 Tier A Company Targeted"
+    locations: *company_search_locations
+  - query: "Maxis data analytics internship"
+    group: "G5 Tier A Company Targeted"
+    locations: *company_search_locations
+  - query: "CelcomDigi data analytics internship"
+    group: "G5 Tier A Company Targeted"
+    locations: *company_search_locations
+
+  # G6 Tier B / MNC / Manufacturing
+  - query: "Abbott data analytics internship"
+    group: "G6 Tier B MNC Manufacturing"
+    locations: *company_search_locations
+  - query: "NTT DATA data analytics internship"
+    group: "G6 Tier B MNC Manufacturing"
+    locations: *company_search_locations
+  - query: "Allianz data analytics internship"
+    group: "G6 Tier B MNC Manufacturing"
+    locations: *company_search_locations
+  - query: "AXA data analytics internship"
+    group: "G6 Tier B MNC Manufacturing"
+    locations: *company_search_locations
+  - query: "Mettler-Toledo data analytics internship"
+    group: "G6 Tier B MNC Manufacturing"
+    locations: *company_search_locations
+  - query: "DHL data analytics internship"
+    group: "G6 Tier B MNC Manufacturing"
+    locations: *company_search_locations
+  - query: "Siemens data analytics internship"
+    group: "G6 Tier B MNC Manufacturing"
+    locations: *company_search_locations
+  - query: "Western Digital data analytics internship"
+    group: "G6 Tier B MNC Manufacturing"
+    locations: *company_search_locations
+  - query: "Micron data analytics internship"
+    group: "G6 Tier B MNC Manufacturing"
+    locations: *company_search_locations
+  - query: "Keysight data analytics internship"
+    group: "G6 Tier B MNC Manufacturing"
+    locations: *company_search_locations
+  - query: "Infineon data analytics internship"
+    group: "G6 Tier B MNC Manufacturing"
+    locations: *company_search_locations
+  - query: "Jabil data analytics internship"
+    group: "G6 Tier B MNC Manufacturing"
+    locations: *company_search_locations
+  - query: "Flex data analytics internship"
+    group: "G6 Tier B MNC Manufacturing"
+    locations: *company_search_locations
+  - query: "Roche data analytics internship"
+    locations: *company_search_locations
+    group: "G6 Tier B MNC Manufacturing"
+
+  # G7 Malaysia-wide backup
+  - query: "internship data analytics Malaysia"
+    group: "G7 Malaysia-wide backup"
+    locations: ["Malaysia"]
   - query: "data analyst intern Malaysia"
+    group: "G7 Malaysia-wide backup"
+    locations: ["Malaysia"]
+  - query: "analytics internship Malaysia"
+    group: "G7 Malaysia-wide backup"
+    locations: ["Malaysia"]
+  - query: "business analyst intern Malaysia"
+    group: "G7 Malaysia-wide backup"
+    locations: ["Malaysia"]
+  - query: "Power BI intern Malaysia"
+    group: "G7 Malaysia-wide backup"
+    locations: ["Malaysia"]
+  - query: "SQL intern Malaysia"
+    group: "G7 Malaysia-wide backup"
+    locations: ["Malaysia"]
+  - query: "reporting intern Malaysia"
+    group: "G7 Malaysia-wide backup"
     locations: ["Malaysia"]

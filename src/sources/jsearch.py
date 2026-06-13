@@ -10,6 +10,9 @@ from ..models import JobPosting
 
 
 API_URL = "https://api.openwebninja.com/jsearch/search-v2"
+DEFAULT_MAX_REQUESTS_PER_RUN = 3
+DEFAULT_URGENT_CAMPAIGN_MAX_REQUESTS_PER_RUN = 160
+FALLBACK_ROTATION_SLOTS_PER_DAY = 4
 
 
 def enabled() -> bool:
@@ -67,11 +70,29 @@ def _build_query(base_query: str, loc: str) -> str:
 
 
 def _flatten_pairs(config: dict[str, Any]) -> list[tuple[str, str]]:
-    pairs: list[tuple[str, str]] = []
+    grouped: dict[str, list[tuple[str, str]]] = {}
+    group_order: list[str] = []
     for item in config.get("queries", []):
         base_query = item.get("query", "")
+        group = str(item.get("group", "default"))
+        if group not in grouped:
+            grouped[group] = []
+            group_order.append(group)
         for loc in item.get("locations", ["Malaysia"]):
-            pairs.append((base_query, loc))
+            grouped[group].append((base_query, loc))
+
+    pairs: list[tuple[str, str]] = []
+    index = 0
+    while True:
+        added = False
+        for group in group_order:
+            group_pairs = grouped[group]
+            if index < len(group_pairs):
+                pairs.append(group_pairs[index])
+                added = True
+        if not added:
+            return pairs
+        index += 1
     return pairs
 
 
@@ -87,8 +108,8 @@ def _rotation_offset(total_pairs: int, max_requests: int) -> int:
         return ((int(run_number) - 1) * max_requests) % total_pairs
 
     now = datetime.now(timezone.utc)
-    half_day_slot = 0 if now.hour < 12 else 1
-    slot = now.toordinal() * 2 + half_day_slot
+    slot_in_day = min((now.hour * FALLBACK_ROTATION_SLOTS_PER_DAY) // 24, FALLBACK_ROTATION_SLOTS_PER_DAY - 1)
+    slot = now.toordinal() * FALLBACK_ROTATION_SLOTS_PER_DAY + slot_in_day
     return (slot * max_requests) % total_pairs
 
 
@@ -99,12 +120,45 @@ def _rotated_pairs(pairs: list[tuple[str, str]], max_requests: int) -> list[tupl
     return pairs[offset:] + pairs[:offset]
 
 
+def _campaign_request_ceiling(config: dict[str, Any]) -> int:
+    campaign = config.get("strategy", {}).get("urgent_campaign", {})
+    if not campaign.get("enabled", False):
+        return DEFAULT_MAX_REQUESTS_PER_RUN
+
+    try:
+        ends_before = datetime.fromisoformat(str(campaign.get("ends_before", ""))).date()
+    except ValueError:
+        ends_before = None
+
+    if ends_before and datetime.now(timezone.utc).date() >= ends_before:
+        return int(campaign.get("post_campaign_max_requests_per_run", DEFAULT_MAX_REQUESTS_PER_RUN))
+    return int(campaign.get("max_requests_per_run", DEFAULT_URGENT_CAMPAIGN_MAX_REQUESTS_PER_RUN))
+
+
+def _max_requests_per_run(config: dict[str, Any]) -> int:
+    ceiling = max(1, _campaign_request_ceiling(config))
+    raw = os.getenv("JSEARCH_MAX_REQUESTS_PER_RUN", str(DEFAULT_MAX_REQUESTS_PER_RUN)).strip()
+    try:
+        value = int(raw or DEFAULT_MAX_REQUESTS_PER_RUN)
+    except ValueError:
+        print(f"[jsearch] invalid JSEARCH_MAX_REQUESTS_PER_RUN; using {DEFAULT_MAX_REQUESTS_PER_RUN}")
+        return DEFAULT_MAX_REQUESTS_PER_RUN
+
+    if value < 1:
+        print(f"[jsearch] non-positive JSEARCH_MAX_REQUESTS_PER_RUN={value}; using {DEFAULT_MAX_REQUESTS_PER_RUN}")
+        return DEFAULT_MAX_REQUESTS_PER_RUN
+    if value > ceiling:
+        print(f"[jsearch] request cap limited to {ceiling} by campaign guard")
+        return ceiling
+    return value
+
+
 def fetch(config: dict[str, Any], per_query: int = 10) -> list[JobPosting]:
     api_key = os.getenv("JSEARCH_API_KEY", "").strip()
     if not api_key:
         return []
 
-    max_requests = int(os.getenv("JSEARCH_MAX_REQUESTS_PER_RUN", "3") or 3)
+    max_requests = _max_requests_per_run(config)
     request_count = 0
 
     jobs: list[JobPosting] = []
@@ -131,6 +185,11 @@ def fetch(config: dict[str, Any], per_query: int = 10) -> list[JobPosting]:
             print(f"[jsearch] query: {query}")
             response = requests.get(API_URL, params=params, headers=headers, timeout=30)
             request_count += 1
+            if response.status_code == 429:
+                retry_after = response.headers.get("Retry-After", "")
+                suffix = f"; retry after {retry_after}" if retry_after else ""
+                print(f"[jsearch] rate limit reached after {request_count} requests{suffix}; stopping this run")
+                return jobs
             response.raise_for_status()
             payload = response.json()
         except Exception as exc:
