@@ -152,7 +152,7 @@ def _source_quality_score(job: JobPosting, config: dict[str, Any]) -> tuple[int,
         score += 5
         reasons.append("trusted job board source")
     elif any(x and x in full_url for x in low_signal):
-        score -= 8
+        score -= 12
         reasons.append("aggregator/low-signal source; manually verify before applying")
     elif host:
         score += 1
