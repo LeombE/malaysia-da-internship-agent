@@ -1,133 +1,212 @@
-# Malaysia Data Analyst Internship Agent
+# Malaysia Data Analyst Internship Intelligence Pipeline
 
-目标：每天 2 次自动收集、去重、评分并发送马来西亚 Data Analyst / Analytics / BI 相关 internship 机会，重点地区：Johor、Selangor、Kuala Lumpur、Penang。默认实习窗口按 **2026-08-02 到 2026-11-03**，约 3 个月；如果职位要求超过 3 个月，也会保留但降低日期匹配分。
+## 2-Minute Project Summary
 
-> 合规原则：优先使用 Jobs API、Google Alerts、公司官网公开 career pages；不要绕过登录、验证码、反爬或平台限制；不要抓取个人资料。
+This repository is a production-style data pipeline that helps a student find and prioritize Malaysia Data Analyst, Data Analytics, BI, Reporting, SQL, Power BI, Business Analyst, and Data Science internships for the target window of 2026-08-02 to 2026-11-03.
 
-## 1. 文件结构
+It collects internship leads from responsible job sources, cleans and normalizes the records, scores each role against business rules, stores results in SQLite, exports decision-ready CSV files, and runs automatically through GitHub Actions.
+
+The project is built to prove practical Data Analyst internship skills:
+
+- Python data ingestion and transformation
+- API-based data collection
+- Data cleaning and deduplication
+- Business-rule scoring
+- SQLite persistence
+- CSV reporting
+- GitHub Actions automation
+- Stakeholder-focused decision support
+- Responsible data sourcing and secret handling
+
+## Stakeholder and Business Problem
+
+The stakeholder is a student who needs a suitable Malaysia-based internship offer for an academic requirement. The practical business problem is not simply finding more job posts. It is deciding what to apply to first when job boards are noisy, duplicated, incomplete, and spread across many sources.
+
+The system improves this decision:
+
+> Which internship roles should the user apply to today, verify manually, mass apply to, or ignore?
+
+The ranking prioritizes offer probability and internship fit over salary. Large companies, MNCs, banks, Big 4 firms, semiconductor/manufacturing analytics roles, telecommunications, e-commerce, and reputable technology companies are prioritized, while SME roles remain available for mass-apply coverage.
+
+## Current Architecture and Workflow
 
 ```text
-.
-├── .github/workflows/daily.yml       # GitHub Actions：每天 08:30 + 20:30 MYT 执行
-├── config.yml                        # 地区、关键词、公司分层、评分权重
-├── .env.example                      # 需要配置的密钥
-├── requirements.txt
-├── data/company_targets.yml          # 大公司/目标公司 career page 配置
-├── prompts/codex_morning.md          # 每天第 1 次 Codex prompt
-├── prompts/codex_evening.md          # 每天第 2 次 Codex prompt
-└── src/
-    ├── main.py                       # 主入口
-    ├── models.py                     # JobPosting 数据模型
-    ├── scoring.py                    # 评分逻辑
-    ├── storage.py                    # SQLite 去重与历史记录
-    ├── notifications.py              # Telegram / Email 通知
-    └── sources/
-        ├── jsearch.py                # JSearch API
-        ├── adzuna.py                 # Adzuna API
-        ├── google_alerts.py          # Google Alerts RSS/Atom
-        └── company_pages.py          # 公司官网公开页面，robots-respectful
+GitHub Actions schedule
+        |
+        v
+src/main.py
+        |
+        +-- src/sources/jsearch.py          OpenWeb Ninja JSearch API
+        +-- src/sources/adzuna.py           Optional Adzuna API
+        +-- src/sources/google_alerts.py    Optional Google Alerts RSS
+        +-- src/sources/company_pages.py    Optional public career pages
+        |
+        v
+src/scoring.py       Role, location, date, company, source, and risk scoring
+        |
+        v
+src/storage.py       SQLite upsert, deduplication, CSV exports, tracker preservation
+        |
+        v
+data/jobs.db
+data/latest_ranked_jobs.csv
+data/today_shortlist.csv
+data/internship_tracker.csv
 ```
 
-## 2. 本地安装
+The pipeline can run locally and in GitHub Actions. During the urgent 15-day campaign, GitHub Actions runs 4 times per day with `JSEARCH_MAX_REQUESTS_PER_RUN=160`.
+
+## Data Sources and Responsible Sourcing
+
+The main source is OpenWeb Ninja JSearch API. The project also includes optional integrations for Adzuna API, Google Alerts RSS, and public company career pages.
+
+Responsible sourcing rules:
+
+- Prefer official APIs, public RSS feeds, official career pages, and public ATS links.
+- Do not automate login scraping.
+- Do not bypass CAPTCHA, paywalls, robots.txt, or platform restrictions.
+- Treat aggregators as lower-confidence sources, not forbidden sources.
+- Prefer official company career pages and ATS links when duplicates exist.
+- Never commit secrets or credentials.
+
+## Output Files and How to Use Them
+
+| File | Purpose | Stakeholder use |
+|---|---|---|
+| `data/latest_ranked_jobs.csv` | Full ranked job output | Review complete pipeline results and audit ranking quality. |
+| `data/today_shortlist.csv` | Top actionable A/B/C shortlist | Decide what to apply to today. |
+| `data/internship_tracker.csv` | Application tracking table | Record applied status, follow-up dates, interviews, offers, and notes. |
+| `data/jobs.db` | SQLite job history | Preserve first seen, last seen, deduped records, and run history. |
+
+See:
+
+- `docs/data_dictionary.md`
+- `docs/scoring_methodology.md`
+- `reports/latest_campaign_summary.md`
+
+## Scoring and Bucket Methodology
+
+Each job is scored from 0 to 100 using practical business rules:
+
+- Role relevance: Data Analyst, Data Analytics, BI, SQL, Power BI, Reporting, Business Analyst, Data Science.
+- Internship fit: internship, practical training, industrial training, student-friendly language.
+- Location fit: Johor, Selangor, Kuala Lumpur, Penang, Malaysia-wide fallback.
+- Date and duration fit: Aug-Nov 2026, 3 months, 3-6 months, industrial training.
+- Company quality: Tier 1 and Tier 2 target companies receive bonuses.
+- Source quality: official/ATS sources receive bonuses, trusted job boards receive moderate bonuses, aggregator-only links receive a penalty.
+- Risk penalties: senior, manager, permanent, non-Malaysia, high-experience, undisclosed company, or weak role fit.
+
+Buckets:
+
+| Bucket | Meaning | Action |
+|---|---|---|
+| `A_APPLY_NOW` | Highest-priority roles | Apply today after checking date and duration. |
+| `B_APPLY_SOON` | Strong roles with some verification needed | Apply within 48 hours after quick manual review. |
+| `C_MASS_APPLY` | Lower certainty but still useful | Use for broad application volume and SME coverage. |
+| `D_LOW_PRIORITY` | Weak or noisy matches | Keep for record; usually ignore. |
+
+## Current Measurable Results
+
+Latest checked output metrics:
+
+| Metric | Value |
+|---|---:|
+| Rows in `latest_ranked_jobs.csv` | 131 |
+| Rows in `today_shortlist.csv` | 80 |
+| Rows in `internship_tracker.csv` | 119 |
+| Newest campaign rows | 98 |
+| Newest `A_APPLY_NOW` rows | 7 |
+| Newest `B_APPLY_SOON` rows | 41 |
+| Newest `C_MASS_APPLY` rows | 50 |
+| Newest Selangor rows | 40 |
+| Newest Kuala Lumpur rows | 30 |
+| Newest Penang rows | 19 |
+| Newest Johor rows | 6 |
+| Newest Malaysia-wide rows | 3 |
+
+Example high-priority companies surfaced in the current outputs include Grab, TNG Digital, Maxis, DXC Technology, Infineon, Allianz, Abbott, AXA, PETRONAS-related roles, Bosch, Volvo Trucks, WPP Media, and Hilti.
+
+## GitHub Actions Automation
+
+The urgent campaign runs four times per day in Malaysia time:
+
+- 06:30 MYT
+- 12:30 MYT
+- 18:30 MYT
+- 23:30 MYT
+
+GitHub Actions implements that schedule with this UTC cron:
+
+```yaml
+cron: "30 4,10,15,22 * * *"
+```
+
+Campaign quota strategy:
+
+- 4 runs per day
+- 160 JSearch requests per run
+- 15-day target: about 9,600 automated requests
+- Reserve: about 400 requests for manual validation/debug
+
+After the campaign, reduce `JSEARCH_MAX_REQUESTS_PER_RUN` to 60 or lower.
+
+## Security and Secrets Policy
+
+Secrets are supplied through `.env` locally and GitHub Secrets in production. They must never be committed.
+
+Important secret names:
+
+- `JSEARCH_API_KEY`
+- `JSEARCH_MAX_REQUESTS_PER_RUN`
+- `ADZUNA_APP_ID`
+- `ADZUNA_APP_KEY`
+- `GOOGLE_ALERT_FEEDS`
+- `TELEGRAM_BOT_TOKEN`
+- `TELEGRAM_CHAT_ID`
+- SMTP/email secrets if enabled
+
+The repository ignores `.env`, `.venv/`, Python caches, and SQLite WAL/SHM files.
+
+## Limitations and Known Data Quality Risks
+
+- Aggregator sources can dominate output volume and may contain stale, duplicated, or rewritten listings.
+- Some roles do not state the exact Aug-Nov 2026 internship window and need manual verification.
+- Some listings mention wrong intake periods such as Jan-Apr 2026 or Summer 2026.
+- Some location/state classification can be imperfect when the source text contains multiple city names or URLs.
+- The tracker is only useful once application statuses are updated manually.
+- The pipeline ranks evidence; it does not guarantee that a role is still open.
+
+## Resume-Ready Bullets
+
+- Built a Python and GitHub Actions data pipeline that collects, cleans, scores, ranks, and exports Malaysia internship leads from API and public data sources.
+- Designed a business-rule scoring model that prioritizes internship fit, location fit, company quality, source reliability, and actionability.
+- Automated a 15-day campaign running 4 times per day with 160 JSearch requests per run, targeting about 9,600 automated searches.
+- Produced decision-ready CSV reports with action buckets: apply now, apply soon, mass apply, and low priority.
+- Implemented SQLite persistence, deduplication, first/last seen tracking, and tracker field preservation for application follow-up.
+- Applied responsible data sourcing practices by using APIs, RSS, public career pages, GitHub Secrets, and no login/CAPTCHA bypassing.
+
+## Local Use
+
+Windows CMD:
+
+```cmd
+python -m venv .venv
+.venv\Scripts\activate.bat
+pip install -r requirements.txt
+```
+
+macOS/Linux:
 
 ```bash
 python -m venv .venv
-source .venv/bin/activate  # Windows: .venv\\Scripts\\activate
+source .venv/bin/activate
 pip install -r requirements.txt
-cp .env.example .env
 ```
 
-编辑 `.env`，最少建议先配置：
+Run only when quota use is intended:
 
-```bash
-JSEARCH_API_KEY=...
-TELEGRAM_BOT_TOKEN=...
-TELEGRAM_CHAT_ID=...
-```
-
-Adzuna、Google Alerts、SMTP email 都是可选；没有配置的 source 会自动跳过。
-
-## 3. 运行测试
-
-```bash
+```cmd
 python -m src.main --dry-run
 ```
 
-成功后你会看到：
-
-- SQLite 数据库：`data/jobs.db`
-- CSV 导出：`data/latest_ranked_jobs.csv`
-- 控制台输出 top results
-
-正式发送：
-
-```bash
-python -m src.main
-```
-
-## 4. GitHub Actions 部署
-
-1. 新建 GitHub repo，例如 `malaysia-da-internship-agent`。
-2. 把本项目文件 push 上去。
-3. 进入 GitHub repo → Settings → Secrets and variables → Actions → New repository secret。
-4. 添加 `.env.example` 里的密钥，例如：
-   - `JSEARCH_API_KEY`
-   - `ADZUNA_APP_ID`
-   - `ADZUNA_APP_KEY`
-   - `TELEGRAM_BOT_TOKEN`
-   - `TELEGRAM_CHAT_ID`
-   - `SMTP_HOST`
-   - `SMTP_PORT`
-   - `SMTP_USER`
-   - `SMTP_PASS`
-   - `EMAIL_TO`
-5. 打开 Actions tab，手动点 Run workflow 测试一次。
-
-默认计划：每天马来西亚时间 08:30 和 20:30 运行。GitHub Actions 使用 UTC cron，所以 workflow 里写的是 `30 0,12 * * *`。
-
-## 5. Google Alerts 设置
-
-建议创建这些 Alerts，然后把 RSS feed URL 放进 `.env` 的 `GOOGLE_ALERT_FEEDS`，用逗号分隔：
-
-```text
-"data analyst intern" Malaysia
-"data analytics internship" Malaysia
-"business intelligence intern" Malaysia
-"data science internship" Malaysia
-"Power BI intern" Malaysia
-"SQL intern" Malaysia
-"data analyst internship" "Kuala Lumpur"
-"data analyst internship" Selangor
-"data analyst internship" Penang
-"data analyst internship" Johor
-"latihan industri" "data analyst" Malaysia
-"praktikal" "data analytics" Malaysia
-site:careers.* Malaysia "data analyst intern"
-```
-
-## 6. Codex 每天 2 次使用方式
-
-不要让 Codex 每天“手动浏览网页”来消耗 token；那样不稳定，也不利于复现。更好的 token 策略是：
-
-- 早上：让 Codex 检查昨晚/今早的 run logs、失败 source、低质量结果，自动修采集器和 query。
-- 晚上：让 Codex 根据 `latest_ranked_jobs.csv`、`jobs.db` 和你的申请状态，改进评分、补目标公司、产出明天申请清单。
-
-复制 `prompts/codex_morning.md` 和 `prompts/codex_evening.md` 到 Codex 使用。
-
-## 7. 数据质量规则
-
-每条职位必须尽量保留：
-
-- source, source_url, apply_url
-- title, company, location, state
-- description / snippet
-- posted_at, first_seen_at, last_seen_at
-- role_fit_score, date_fit_score, location_score, company_tier_score, total_score
-- reason: 为什么推荐/为什么降权
-
-## 8. 申请优先级
-
-- A：官方公司 career page + 大公司/结构化 internship + 明确 3 个月或可协商 + 地点匹配。
-- B：大型平台/API 聚合 + 描述高度匹配 + 无明确日期但 internship 合理。
-- C：小公司/SME + 明确接受 internship + 任务含 Excel/SQL/Power BI/Python。
-- D：全职、senior、manager、明显不收 intern、地点不匹配、需要 6 个月且不可协商。
+For portfolio review, inspect the generated CSVs and Markdown docs instead of rerunning collection.
