@@ -63,33 +63,36 @@ cron: "30 4,10,15,22 * * *"
 
 ## Current Output Snapshot
 
-Latest checked outputs:
+Latest checked output snapshot as of `2026-06-14T23:59:52+00:00`.
+
+These metrics are generated outputs and will change after scheduled GitHub Actions runs.
 
 | Output | Rows |
 |---|---:|
-| `data/latest_ranked_jobs.csv` | 131 |
+| `data/latest_ranked_jobs.csv` | 500 |
 | `data/today_shortlist.csv` | 80 |
-| `data/internship_tracker.csv` | 119 |
-| Newest campaign rows | 98 |
+| `data/internship_tracker.csv` | 353 |
+| Newest campaign rows in `latest_ranked_jobs.csv` | 420 |
 
 Newest campaign bucket counts:
 
 | Bucket | Rows |
 |---|---:|
-| `A_APPLY_NOW` | 7 |
-| `B_APPLY_SOON` | 41 |
-| `C_MASS_APPLY` | 50 |
-| `D_LOW_PRIORITY` | 0 |
+| `A_APPLY_NOW` | 10 |
+| `B_APPLY_SOON` | 61 |
+| `C_MASS_APPLY` | 226 |
+| `D_LOW_PRIORITY` | 123 |
 
 Newest campaign location coverage:
 
 | State | Rows |
 |---|---:|
-| Selangor | 40 |
-| Kuala Lumpur | 30 |
-| Penang | 19 |
-| Johor | 6 |
-| Malaysia-wide | 3 |
+| Selangor | 154 |
+| Kuala Lumpur | 132 |
+| Penang | 82 |
+| Johor | 21 |
+| Malaysia-wide | 30 |
+| Unclassified | 1 |
 
 ## Portfolio Value
 

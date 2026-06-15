@@ -1,33 +1,38 @@
 # Malaysia Data Analyst Internship Intelligence Report
 
-Generated: 2026-06-15 17:45 Asia/Kuala_Lumpur
+Generated: 2026-06-15 18:14 Asia/Kuala_Lumpur
+
+Snapshot as of `2026-06-14T23:59:52+00:00`.
+
+These metrics are generated outputs and will change after scheduled GitHub Actions runs.
 
 ## Executive Summary
 
-- The latest ranked output contains 131 opportunities, with 80 rows in the daily shortlist and 119 rows in the application tracker.
-- The newest campaign run contributed 98 rows: 7 `A_APPLY_NOW`, 41 `B_APPLY_SOON`, and 50 `C_MASS_APPLY`.
-- Location coverage is strongest in Selangor with 40 newest rows, followed by Kuala Lumpur with 30, Penang with 19, Johor with 6, and Malaysia-wide with 3.
+- The latest ranked output contains 500 opportunities, with 80 rows in the daily shortlist and 353 rows in the application tracker.
+- The newest campaign snapshot contributed 420 rows in `latest_ranked_jobs.csv`: 10 `A_APPLY_NOW`, 61 `B_APPLY_SOON`, 226 `C_MASS_APPLY`, and 123 `D_LOW_PRIORITY`.
+- Location coverage is strongest in Selangor with 154 newest rows, followed by Kuala Lumpur with 132, Penang with 82, Malaysia-wide with 30, Johor with 21, and 1 unclassified row.
 - The pipeline is finding high-value companies such as Grab, TNG Digital, Maxis, DXC Technology, Infineon, Allianz, Abbott, AXA, PETRONAS-related roles, Bosch, Volvo Trucks, WPP Media, and Hilti.
-- Source quality still needs manual review: newest campaign rows include 54 low-signal source-rank rows, and Trabajo is the dominant source domain with 45 newest rows.
+- Source quality still needs manual review: newest campaign rows include 317 low-signal source-rank rows, and Trabajo is the dominant source domain with 182 newest rows.
 
 ## Key Metrics
 
 | Metric | Value |
 |---|---:|
-| Rows in `latest_ranked_jobs.csv` | 131 |
+| Rows in `latest_ranked_jobs.csv` | 500 |
 | Rows in `today_shortlist.csv` | 80 |
-| Rows in `internship_tracker.csv` | 119 |
-| Newest campaign rows | 98 |
-| Newest `A_APPLY_NOW` rows | 7 |
-| Newest `B_APPLY_SOON` rows | 41 |
-| Newest `C_MASS_APPLY` rows | 50 |
-| Newest `D_LOW_PRIORITY` rows | 0 |
-| Selangor newest rows | 40 |
-| Kuala Lumpur newest rows | 30 |
-| Penang newest rows | 19 |
-| Johor newest rows | 6 |
-| Malaysia-wide newest rows | 3 |
-| Low-signal source-rank rows in newest output | 54 |
+| Rows in `internship_tracker.csv` | 353 |
+| Newest campaign rows in `latest_ranked_jobs.csv` | 420 |
+| Newest `A_APPLY_NOW` rows | 10 |
+| Newest `B_APPLY_SOON` rows | 61 |
+| Newest `C_MASS_APPLY` rows | 226 |
+| Newest `D_LOW_PRIORITY` rows | 123 |
+| Selangor newest rows | 154 |
+| Kuala Lumpur newest rows | 132 |
+| Penang newest rows | 82 |
+| Johor newest rows | 21 |
+| Malaysia-wide newest rows | 30 |
+| Unclassified newest rows | 1 |
+| Low-signal source-rank rows in newest output | 317 |
 
 ## Best Opportunities Today
 
@@ -35,16 +40,16 @@ Highest-priority opportunities from the current CSV outputs:
 
 | Priority | Company | Role | Location | Bucket | Score | Source note |
 |---:|---|---|---|---|---:|---|
-| 1 | Grab | Intern - Data Scientist (Analytics) - Mobility | Petaling Jaya, Selangor | `A_APPLY_NOW` | 74 | Official Grab Careers |
-| 2 | TNG Digital | Specialist, Intern - Data Analyst | Kuala Lumpur | `A_APPLY_NOW` | 70 | Official company domain |
-| 3 | DXC Technology | Business Intelligence (BI) Intern | Kuala Lumpur | `A_APPLY_NOW` | 70 | Official career site |
-| 4 | Maxis | Data Analytics & AI Intern | Kuala Lumpur | `A_APPLY_NOW` | 71 | Trusted job board |
-| 5 | Infineon | Data Intern | George Town, Penang | `B_APPLY_SOON` | 65 | Official jobs domain |
-| 6 | Allianz Insurance | Internship, Data and AI | Kuala Lumpur | `B_APPLY_SOON` | 64 | Official career site |
-| 7 | AXA | Data Analyst - Identity Access Management (Internship) | Puchong, Selangor | `B_APPLY_SOON` | 63 | Official career site |
-| 8 | Allianz Insurance | Internship, Business Analyst - Digital Transformation Office | Kuala Lumpur | `B_APPLY_SOON` | 62 | Official career site |
-| 9 | Abbott Laboratories | Service Operations & Data Analytics Intern | Petaling Jaya, Selangor | `B_APPLY_SOON` | 64 | Company jobs domain |
-| 10 | WPP Media | Analytics Intern | Kuala Lumpur | `B_APPLY_SOON` | 60 | Company/ATS-like source |
+| 1 | Grab | Intern, Data Scientist - Marketing Technology & AI | Petaling Jaya, Selangor | `A_APPLY_NOW` | 84 | Official Grab Careers |
+| 2 | Allianz Insurance | Internship, Data Office | Kuala Lumpur | `A_APPLY_NOW` | 78 | Official career site |
+| 3 | Grab | Intern, Data Scientist - Country & Marketing | Petaling Jaya, Selangor | `A_APPLY_NOW` | 77 | Official Grab Careers |
+| 4 | Grab | Intern - Data Scientist (Analytics) - Mobility | Petaling Jaya, Selangor | `A_APPLY_NOW` | 74 | Official Grab Careers |
+| 5 | Maxis | Data Analytics & AI Intern | Kuala Lumpur | `A_APPLY_NOW` | 71 | Trusted job board |
+| 6 | Allianz Insurance | Internship, Agency Transformation | Kuala Lumpur | `A_APPLY_NOW` | 70 | Official career site |
+| 7 | DXC Technology | Business Intelligence (BI) Intern | Kuala Lumpur | `A_APPLY_NOW` | 70 | Official career site |
+| 8 | TNG Digital | Specialist, Intern - Data Analyst | Kuala Lumpur | `A_APPLY_NOW` | 70 | Official company domain |
+| 9 | Maxis | Digital & AI Operations Intern | Kuala Lumpur | `B_APPLY_SOON` | 69 | Trusted job board |
+| 10 | Volvo Trucks Malaysia | Business Analytics Intern (Logistic) | Shah Alam, Selangor | `B_APPLY_SOON` | 69 | Trusted job board |
 
 Important manual verification targets:
 
@@ -57,31 +62,31 @@ Important manual verification targets:
 
 Selangor:
 
-- Strongest coverage with 40 newest rows.
+- Strongest coverage with 154 newest rows.
 - Common cities include Petaling Jaya, Shah Alam, Puchong, Cyberjaya, and broader Selangor.
 - Strong fit for Grab, Volvo Trucks, Abbott, AXA, Hilti, Mettler-Toledo, SGS, FedEx, and SME opportunities.
 
 Kuala Lumpur:
 
-- 30 newest rows.
+- 132 newest rows.
 - Strong concentration in analytics, BI, data, digital transformation, Power BI, and business analyst roles.
 - High-value companies include TNG Digital, Maxis, DXC Technology, Allianz, WPP Media, Setel, Teleport, Petronas Ventures, AirAsia, and Principal Malaysia.
 
 Penang:
 
-- 19 newest rows.
+- 82 newest rows.
 - Strong manufacturing and semiconductor analytics signal.
 - Notable employers include Infineon, Bosch, Keysight, Jabil, Sandisk, Renesas, Intel, Plexus, and Teleperformance.
 
 Johor:
 
-- 6 newest rows.
+- 21 newest rows.
 - Coverage is still thin compared with Selangor/KL/Penang, but the campaign found usable leads such as PETRONAS Gas Segamat, Invenio Johor Bahru, STMicroelectronics Muar, iTask Johor Bahru, and Pasir Gudang roles.
 - Johor should remain the top location priority, but broader Selangor/KL/Penang application volume is important for offer probability.
 
 Malaysia-wide:
 
-- 3 newest rows.
+- 30 newest rows.
 - Useful as backup coverage, but requires careful intake/date verification.
 
 ## Skill / Role Demand
@@ -99,16 +104,16 @@ Observed role patterns from the current outputs:
 
 Apply first today:
 
-1. Grab - Intern - Data Scientist (Analytics) - Mobility.
-2. TNG Digital - Specialist, Intern - Data Analyst.
-3. DXC Technology - Business Intelligence (BI) Intern.
-4. Maxis - Data Analytics & AI Intern.
-5. Infineon - Data Intern.
-6. Allianz Insurance - Internship, Data and AI.
-7. AXA - Data Analyst - Identity Access Management (Internship).
-8. Allianz Insurance - Internship, Business Analyst - Digital Transformation Office.
-9. Abbott Laboratories - Service Operations & Data Analytics Intern.
-10. WPP Media - Analytics Intern.
+1. Grab - Intern, Data Scientist - Marketing Technology & AI.
+2. Allianz Insurance - Internship, Data Office.
+3. Grab - Intern, Data Scientist - Country & Marketing.
+4. Grab - Intern - Data Scientist (Analytics) - Mobility.
+5. Maxis - Data Analytics & AI Intern.
+6. Allianz Insurance - Internship, Agency Transformation.
+7. DXC Technology - Business Intelligence (BI) Intern.
+8. TNG Digital - Specialist, Intern - Data Analyst.
+9. Maxis - Digital & AI Operations Intern.
+10. Volvo Trucks Malaysia - Business Analytics Intern (Logistic).
 
 Verify before applying:
 
@@ -131,8 +136,8 @@ Tracker action:
 
 ## Data Quality Notes
 
-- Aggregator dominance is the largest current quality risk. The newest campaign output has 54 low-signal source-rank rows.
-- `my.trabajo.org` is the most common source domain in the newest output, with 45 rows.
+- Aggregator dominance is the largest current quality risk. The newest campaign output has 317 low-signal source-rank rows.
+- `my.trabajo.org` is the most common source domain in the newest output, with 182 rows.
 - Duplicate risk remains when the same job appears across official sites, trusted boards, and aggregators.
 - Missing date fields are common; missing dates should trigger manual verification, not automatic rejection.
 - Wrong-intake risk exists for postings mentioning Jan-Apr 2026, April 2026, or Summer 2026.

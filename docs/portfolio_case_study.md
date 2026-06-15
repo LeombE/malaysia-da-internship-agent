@@ -54,22 +54,26 @@ The project implements a repeatable data workflow:
 
 ## Current Campaign Metrics
 
-Latest checked output metrics:
+Latest checked output snapshot as of `2026-06-14T23:59:52+00:00`.
+
+These metrics are generated outputs and will change after scheduled GitHub Actions runs.
 
 | Metric | Value |
 |---|---:|
-| `latest_ranked_jobs.csv` rows | 131 |
+| `latest_ranked_jobs.csv` rows | 500 |
 | `today_shortlist.csv` rows | 80 |
-| `internship_tracker.csv` rows | 119 |
-| Newest campaign rows | 98 |
-| Newest `A_APPLY_NOW` rows | 7 |
-| Newest `B_APPLY_SOON` rows | 41 |
-| Newest `C_MASS_APPLY` rows | 50 |
-| Newest Selangor rows | 40 |
-| Newest Kuala Lumpur rows | 30 |
-| Newest Penang rows | 19 |
-| Newest Johor rows | 6 |
-| Newest Malaysia-wide rows | 3 |
+| `internship_tracker.csv` rows | 353 |
+| Newest campaign rows in `latest_ranked_jobs.csv` | 420 |
+| Newest `A_APPLY_NOW` rows | 10 |
+| Newest `B_APPLY_SOON` rows | 61 |
+| Newest `C_MASS_APPLY` rows | 226 |
+| Newest `D_LOW_PRIORITY` rows | 123 |
+| Newest Selangor rows | 154 |
+| Newest Kuala Lumpur rows | 132 |
+| Newest Penang rows | 82 |
+| Newest Johor rows | 21 |
+| Newest Malaysia-wide rows | 30 |
+| Newest unclassified rows | 1 |
 
 Automation:
 
